@@ -1,0 +1,8 @@
+{
+  "name": "Al-Arabi Interaktif",
+  "description": "Platform pembelajaran Bahasa Arab interaktif dengan metode linguistik modern, flashcards, dan game multiplayer.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
