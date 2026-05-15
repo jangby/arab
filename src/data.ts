@@ -83,6 +83,21 @@ export const chapters: Chapter[] = [
       { arabic: "قَامَ", indonesian: "Berdiri", type: "kerja" },
       { arabic: "نَظَرَ", indonesian: "Melihat", type: "kerja" },
       { arabic: "كَتَبَ", indonesian: "Menulis", type: "kerja" },
+    ],
+    sentences: [
+      { arabic: ["أَنَا", "مَرِيْضٌ"], indonesian: "Saya sakit" },
+      { arabic: ["هُوَ", "أُسْتَاذٌ"], indonesian: "Dia seorang guru" },
+      { arabic: ["أَنْتَ", "فَرِحٌ"], indonesian: "Kamu gembira" },
+    ],
+    materials: [
+      {
+        title: "Pengenalan Dhomir (Kata Ganti Orang)",
+        content: "Dhomir adalah kata ganti yang digunakan untuk menggantikan nama orang (Isim). Dalam bahasa Arab, dhomir sangat penting karena akan mempengaruhi bentuk kata kerja (Fi'il) nantinya.\n\nAda 14 Dhomir utama, namun kita mulai dengan 8 yang paling sering digunakan:\n1. هُوَ (Huwa): Dia (1 Laki-laki)\n2. هُمَا (Huma): Mereka berdua\n3. هُمْ (Hum): Mereka (>2 Laki-laki)\n4. هِيَ (Hiya): Dia (1 Perempuan)\n5. أَنْتَ (Anta): Kamu (1 Laki-laki)\n6. أَنْتِ (Anti): Kamu (1 Perempuan)\n7. أَنَا (Ana): Saya (L/P)\n8. نَحْنُ (Nahnu): Kami/Kita (L/P)"
+      },
+      {
+        title: "Pembagian Kata (Al-Kalimah)",
+        content: "Setiap kata dalam bahasa Arab (Al-Kalimah) terbagi menjadi 3 jenis saja:\n\n1. ISIM (Kata Benda/Sifat): Nama orang, hewan, benda, atau sifat. Ciri utamanya bisa diberi Alif Lam (ال) atau Tanwin.\nContoh: كِتَابٌ (Buku), جَمِيْلٌ (Indah).\n\n2. FI'IL (Kata Kerja): Kata yang menunjukkan perbuatan dan terikat waktu.\nContoh: جَلَسَ (Duduk), يَكْتُبُ (Menulis).\n\n3. HURUF (Kata Tugas): Kata yang tidak memiliki makna sempurna kecuali bersama kata lain.\nContoh: فِي (Di dalam), إِلَى (Ke)."
+      }
     ]
   },
   {
@@ -105,6 +120,17 @@ export const chapters: Chapter[] = [
       { arabic: "سَكَتَ", indonesian: "Diam", type: "kerja" },
       { arabic: "ذَكَرَ", indonesian: "Mengingat", type: "kerja" },
       { arabic: "تَفَكَّرَ", indonesian: "Berpikir", type: "kerja" },
+    ],
+    sentences: [
+      { arabic: ["هَذِهِ", "سَمَاءٌ"], indonesian: "Ini langit" },
+      { arabic: ["ذَلِكَ", "قَمَرٌ"], indonesian: "Itu bulan" },
+      { arabic: ["الشَّمْسُ", "ثَقِيْلَةٌ"], indonesian: "Matahari itu berat (secara harfiah/kiasan)" },
+    ],
+    materials: [
+      {
+        title: "Isim Isyarah (Kata Tunjuk)",
+        content: "Isim Isyarah digunakan untuk menunjuk sesuatu. Terbagi menjadi dua jarak:\n\n1. Jarak Dekat (Ini):\n- هَذَا (Hadza): Untuk benda Mudzakkar (Laki-laki).\n- هَذِهِ (Hadzihi): Untuk benda Muannats (Perempuan).\n\n2. Jarak Jauh (Itu):\n- ذَلِكَ (Dzalika): Untuk benda Mudzakkar (Laki-laki).\n- تِلْكَ (Tilka): Untuk benda Muannats (Perempuan).\n\nCara Membedakan Mudzakkar & Muannats:\n- Muannats biasanya diakhiri dengan Ta' Marbuthoh (ة), contoh: مَدْرَسَةٌ.\n- Nama orang perempuan adalah Muannats.\n- Anggota tubuh yang berpasangan biasanya Muannats."
+      }
     ]
   },
   {
@@ -127,6 +153,21 @@ export const chapters: Chapter[] = [
       { arabic: "فَهِمَ", indonesian: "Mengerti", type: "kerja" },
       { arabic: "قَرَأَ", indonesian: "Membaca", type: "kerja" },
       { arabic: "تَخَيَّلَ", indonesian: "Melamun", type: "kerja" },
+    ],
+    sentences: [
+      { arabic: ["فِي", "الْمَسْجِدِ"], indonesian: "Di dalam masjid" },
+      { arabic: ["إِلَى", "الْمَدْرَسَةِ"], indonesian: "Ke sekolah" },
+      { arabic: ["عَلَى", "الشَّجَرَةِ"], indonesian: "Di atas pohon" },
+    ],
+    materials: [
+      {
+        title: "Isim Berdasarkan Jumlah (Number)",
+        content: "Dalam Bahasa Arab, jumlah benda terbagi menjadi tiga, bukan dua seperti bahasa Inggris:\n\n1. MUFROD (Tunggal/1):\nBentuk dasar kata. Contoh: بَيْتٌ (1 Rumah).\n\n2. TASNIYAH (Dua/2):\nDitambahi akhiran ANI (انِ) atau AYNI (يْنِ). Contoh: بَيْتَانِ (2 Rumah).\n\n3. JAMAK (Banyak/>2):\n- Jamak Mudzakkar Salim: Akhiran UNA (وْنَ). Contoh: مُسْلِمُوْنَ.\n- Jamak Muannats Salim: Akhiran ATUN (اتٌ). Contoh: مُسْلِمَاتٌ.\n- Jamak Taksir: Berubah bentuk alami (Hafalan). Contoh: كُتُبٌ (Buku-buku)."
+      },
+      {
+        title: "Huruf Jar (Kata Depan)",
+        content: "Huruf Jar adalah kata tugas yang membuat Isim setelahnya menjadi MAJRUR (biasanya berharakat Kasroh).\n\nBeberapa Huruf Jar utama:\n- فِي (Fi): Di dalam.\n- إِلَى (Ila): Ke.\n- مِنْ (Min): Dari.\n- عَلَى ('Ala): Di atas (menempel).\n\nContoh: فِي الْمَدْرَسَةِ (Di dalam sekolah). Perhatikan harakat 'T' pada Madasati menjadi Kasroh."
+      }
     ]
   },
   {

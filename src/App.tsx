@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { BookOpen, GraduationCap, Gamepad2, Brain, Languages, ArrowLeft, ArrowRight, CheckCircle2, XCircle, Beaker, ScrollText } from 'lucide-react';
+import { BookOpen, GraduationCap, Gamepad2, Brain, Languages, ArrowLeft, ArrowRight, CheckCircle2, XCircle, Beaker, ScrollText, Menu, X, LayoutDashboard, Zap } from 'lucide-react';
 import { chapters, allSentences} from './data';
 import { Chapter, MufrodatItem, SentenceTask, Material } from './types';
 
@@ -20,49 +20,48 @@ const MaterialView = ({ materials }: { materials: Material[] }) => {
   }
 
   return (
-    <div className="flex flex-col lg:flex-row gap-8 py-4">
-      <div className="lg:w-1/3 flex flex-col gap-3">
-        <p className="text-[10px] font-black text-emerald-400 uppercase tracking-widest mb-2 px-2">Daftar Topik</p>
+    <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 py-2 md:py-4">
+      <div className="w-full lg:w-1/3 flex flex-row lg:flex-col gap-2 lg:gap-3 overflow-x-auto lg:overflow-y-auto no-scrollbar pb-2 lg:pb-0">
         {materials.map((m, i) => (
           <button
             key={i}
             onClick={() => setActiveIndex(i)}
-            className={`text-left p-5 rounded-2xl transition-all border-2 ${
+            className={`text-left p-3 lg:p-5 rounded-xl lg:rounded-2xl transition-all border-2 flex-shrink-0 lg:flex-shrink-1 min-w-[200px] lg:min-w-0 ${
               activeIndex === i 
               ? 'bg-emerald-600 border-emerald-600 text-white shadow-lg' 
               : 'bg-white border-emerald-50 text-emerald-900 hover:border-emerald-200'
             }`}
           >
             <div className="flex items-center gap-3">
-              <span className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold ${activeIndex === i ? 'bg-white text-emerald-600' : 'bg-emerald-100 text-emerald-600'}`}>
+              <span className={`w-5 h-5 lg:w-6 lg:h-6 rounded-full flex items-center justify-center text-[10px] font-bold ${activeIndex === i ? 'bg-white text-emerald-600' : 'bg-emerald-100 text-emerald-600'}`}>
                 {i + 1}
               </span>
-              <span className="font-bold flex-1">{m.title}</span>
+              <span className="font-bold text-xs lg:text-base flex-1 line-clamp-1 lg:line-clamp-none">{m.title}</span>
             </div>
           </button>
         ))}
       </div>
 
-      <div className="lg:w-2/3">
+      <div className="w-full lg:w-2/3">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeIndex}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            className="bg-emerald-50/50 rounded-[2.5rem] p-10 border border-emerald-100"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="bg-emerald-50/50 rounded-2xl lg:rounded-[2.5rem] p-6 lg:p-10 border border-emerald-100"
           >
-            <div className="flex items-center gap-4 mb-8">
-              <div className="p-3 bg-white rounded-2xl text-emerald-600 shadow-sm">
-                <ScrollText size={24} />
+            <div className="flex items-center gap-3 lg:gap-4 mb-6 lg:mb-8">
+              <div className="p-2 lg:p-3 bg-white rounded-xl lg:rounded-2xl text-emerald-600 shadow-sm">
+                <ScrollText size={20} />
               </div>
-              <h3 className="text-3xl font-display font-bold text-emerald-900">{materials[activeIndex].title}</h3>
+              <h3 className="text-xl lg:text-3xl font-display font-bold text-emerald-900">{materials[activeIndex].title}</h3>
             </div>
 
             <div className="prose prose-emerald max-w-none">
-              <div className="whitespace-pre-wrap text-emerald-900 text-lg leading-relaxed font-normal">
+              <div className="whitespace-pre-wrap text-emerald-900 text-sm lg:text-lg leading-relaxed font-normal">
                 {materials[activeIndex].content.split('\n').map((line, i) => (
-                   <div key={i} className={line.startsWith('-') ? 'ml-4 flex gap-2' : 'mb-4'}>
+                   <div key={i} className={line.startsWith('-') ? 'ml-4 flex gap-2' : 'mb-3 lg:mb-4'}>
                      {line.startsWith('-') && <span className="text-amber-500 mt-1.5">•</span>}
                      <span>{line.startsWith('-') ? line.substring(1).trim() : line}</span>
                    </div>
@@ -76,76 +75,109 @@ const MaterialView = ({ materials }: { materials: Material[] }) => {
   );
 };
 
-const Navbar = ({ onHome, chapterTitle }: { onHome: () => void, chapterTitle?: string }) => (
-  <header className="h-20 border-b border-emerald-100 bg-white flex items-center justify-between px-8 sticky top-0 z-40">
-    <div className="flex flex-col">
-      <h2 className="text-emerald-900 font-bold text-lg">{chapterTitle || "Dashboard Belajar"}</h2>
-      <p className="text-emerald-500 text-sm italic">Linguistic Curriculum Developer: AI Tutor</p>
-    </div>
+const Navbar = ({ onHome, chapterTitle, sidebarOpen, setSidebarOpen }: { onHome: () => void, chapterTitle?: string, sidebarOpen: boolean, setSidebarOpen: (o: boolean) => void }) => (
+  <header className="px-4 py-3 lg:px-8 lg:py-4 flex justify-between items-center bg-white/30 backdrop-blur-md sticky top-0 z-30 border-b border-emerald-100/50">
     <div className="flex items-center gap-4">
       <button 
-        onClick={onHome}
-        className="px-4 py-2 rounded-full bg-amber-100 text-amber-700 font-bold text-sm hover:bg-amber-200 transition-colors"
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+        className="lg:hidden p-2 bg-emerald-600 text-white rounded-xl shadow-lg"
       >
-        Dashboard
+        <Menu size={20} />
       </button>
-      <div className="w-10 h-10 rounded-full bg-emerald-200 border-2 border-emerald-500 overflow-hidden">
-        <div className="w-full h-full bg-emerald-600 flex items-center justify-center text-white font-bold">U</div>
+      <div className="flex flex-col">
+        <h2 className="text-emerald-900 font-bold text-sm lg:text-lg lg:tracking-tight leading-none lg:leading-normal">
+          <span className="lg:hidden">AL-ARABI AI</span>
+          <span className="hidden lg:inline">{chapterTitle || "Dashboard Belajar"}</span>
+        </h2>
+        <p className="text-[10px] lg:text-xs text-emerald-600/60 font-medium italic underline decoration-amber-400">
+          <span className="lg:hidden uppercase tracking-widest font-bold not-italic">Mobile Lab</span>
+          <span className="hidden lg:inline">AI Tutor Specialist</span>
+        </p>
+      </div>
+    </div>
+    
+    <div className="flex items-center gap-3 lg:gap-6">
+      <button 
+        onClick={onHome}
+        className="hidden sm:flex items-center gap-2 bg-white px-4 py-2 lg:px-5 lg:py-2.5 rounded-xl border border-emerald-100 text-emerald-700 text-xs font-bold shadow-sm hover:shadow-md transition-all active:scale-95"
+      >
+        <LayoutDashboard size={14} />
+        <span className="hidden lg:inline">Dashboard</span>
+      </button>
+      <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-emerald-200 border-2 border-emerald-500 overflow-hidden">
+        <div className="w-full h-full bg-emerald-600 flex items-center justify-center text-white font-bold text-xs lg:text-base">U</div>
       </div>
     </div>
   </header>
 );
 
-const Sidebar = ({ onChapterSelect, activeChapterId, collapsed, setCollapsed }: { onChapterSelect: (c: Chapter) => void, activeChapterId?: number, collapsed: boolean, setCollapsed: (c: boolean) => void }) => (
-  <aside className={`${collapsed ? 'w-20' : 'w-72'} bg-emerald-700 flex flex-col justify-between h-screen sticky top-0 transition-all duration-300 z-50 overflow-hidden`}>
-    <div className="flex flex-col h-full">
-      <div className={`p-6 border-b border-emerald-600 flex items-center ${collapsed ? 'justify-center' : 'justify-between'} mb-6`}>
-        {!collapsed && (
-          <div className="flex items-center gap-3 cursor-pointer" onClick={() => window.location.assign("/")}>
-            <div className="w-8 h-8 bg-amber-400 rounded-lg flex items-center justify-center shadow-lg">
-              <span className="text-xl font-bold text-emerald-900 font-arabic">أ</span>
+const Sidebar = ({ onChapterSelect, activeChapterId, collapsed, setCollapsed, mobileOpen, setMobileOpen }: { onChapterSelect: (c: Chapter) => void, activeChapterId?: number, collapsed: boolean, setCollapsed: (c: boolean) => void, mobileOpen: boolean, setMobileOpen: (o: boolean) => void }) => (
+  <>
+    {/* Mobile Backdrop */}
+    {mobileOpen && (
+      <div 
+        className="fixed inset-0 bg-black/50 z-40 lg:hidden backdrop-blur-sm"
+        onClick={() => setMobileOpen(false)}
+      />
+    )}
+    
+    <aside className={`
+      fixed inset-y-0 left-0 lg:sticky lg:top-0 h-screen z-50 transition-all duration-300 overflow-hidden bg-emerald-700 flex flex-col justify-between
+      ${mobileOpen ? 'translate-x-0 w-72' : '-translate-x-full lg:translate-x-0'}
+      ${collapsed ? 'lg:w-20' : 'lg:w-72'}
+    `}>
+      <div className="flex flex-col h-full">
+        <div className={`p-6 border-b border-emerald-600 flex items-center ${collapsed ? 'lg:justify-center' : 'justify-between'} mb-6`}>
+          {(!collapsed || mobileOpen) && (
+            <div className="flex items-center gap-3 cursor-pointer" onClick={() => window.location.assign("/")}>
+              <div className="w-8 h-8 bg-amber-400 rounded-lg flex items-center justify-center shadow-lg">
+                <span className="text-xl font-bold text-emerald-900 font-arabic">أ</span>
+              </div>
+              <h1 className="text-white font-black text-lg tracking-tight">AL-ARABI AI</h1>
             </div>
-            <h1 className="text-white font-black text-lg tracking-tight">AL-ARABI AI</h1>
+          )}
+          <button onClick={() => setCollapsed(!collapsed)} className="hidden lg:block p-2 hover:bg-emerald-600 rounded-xl text-emerald-100 transition-colors">
+            {collapsed ? <ArrowRight size={20} /> : <ArrowLeft size={20} />}
+          </button>
+          <button onClick={() => setMobileOpen(false)} className="lg:hidden p-2 hover:bg-emerald-600 rounded-xl text-emerald-100 transition-colors">
+            <X size={20} />
+          </button>
+        </div>
+        
+        <nav className="flex-1 overflow-y-auto px-4 space-y-2 no-scrollbar pb-6 text-left">
+          {(!collapsed || mobileOpen) && <p className="text-emerald-300/50 text-[10px] font-bold uppercase tracking-widest mb-4 ml-2">KURIKULUM</p>}
+          {chapters.map((chapter) => (
+            <div 
+              key={chapter.id}
+              onClick={() => { onChapterSelect(chapter); setMobileOpen(false); }}
+              className={`p-3 rounded-xl flex items-center gap-3 cursor-pointer transition-all ${
+                activeChapterId === chapter.id 
+                ? 'bg-emerald-600 border border-emerald-500 text-white shadow-lg' 
+                : 'text-emerald-100 hover:bg-emerald-600/30'
+              }`}
+            >
+              <span className="text-lg opacity-80 shrink-0">{chapter.id === 1 ? '📚' : chapter.id > 3 ? '⚖️' : '🌱'}</span>
+              {(!collapsed || mobileOpen) && <span className="font-medium text-sm truncate">Bab {chapter.id}: {chapter.title.split(': ')[1]}</span>}
+            </div>
+          ))}
+        </nav>
+        
+        {(!collapsed || mobileOpen) && (
+          <div className="p-4 border-t border-emerald-600 bg-emerald-800/50">
+            <p className="text-emerald-300 text-[10px] font-bold uppercase mb-2 tracking-widest">PROGRES BELAJAR</p>
+            <div className="w-full bg-emerald-900 rounded-full h-1.5 mb-2">
+              <motion.div 
+                initial={{ width: 0 }}
+                animate={{ width: "65%" }}
+                className="bg-amber-400 h-1.5 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.5)]"
+              ></motion.div>
+            </div>
+            <p className="text-white text-[10px] font-bold">Lvl. 12 • 1,240 XP</p>
           </div>
         )}
-        <button onClick={() => setCollapsed(!collapsed)} className="p-2 hover:bg-emerald-600 rounded-xl text-emerald-100 transition-colors">
-          {collapsed ? <ArrowRight size={20} /> : <ArrowLeft size={20} />}
-        </button>
       </div>
-      
-      <nav className="flex-1 overflow-y-auto px-4 space-y-2 no-scrollbar pb-6 text-left">
-        {!collapsed && <p className="text-emerald-300/50 text-[10px] font-bold uppercase tracking-widest mb-4 ml-2">KURIKULUM</p>}
-        {chapters.map((chapter) => (
-          <div 
-            key={chapter.id}
-            onClick={() => onChapterSelect(chapter)}
-            className={`p-3 rounded-xl flex items-center gap-3 cursor-pointer transition-all ${
-              activeChapterId === chapter.id 
-              ? 'bg-emerald-600 border border-emerald-500 text-white shadow-lg' 
-              : 'text-emerald-100 hover:bg-emerald-600/30'
-            }`}
-          >
-            <span className="text-lg opacity-80 shrink-0">{chapter.id === 1 ? '📚' : chapter.id > 3 ? '⚖️' : '🌱'}</span>
-            {!collapsed && <span className="font-medium text-sm truncate">Bab {chapter.id}: {chapter.title.split(': ')[1]}</span>}
-          </div>
-        ))}
-      </nav>
-      
-      {!collapsed && (
-        <div className="p-4 border-t border-emerald-600 bg-emerald-800/50">
-          <p className="text-emerald-300 text-[10px] font-bold uppercase mb-2 tracking-widest">PROGRES BELAJAR</p>
-          <div className="w-full bg-emerald-900 rounded-full h-1.5 mb-2">
-            <motion.div 
-              initial={{ width: 0 }}
-              animate={{ width: "65%" }}
-              className="bg-amber-400 h-1.5 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.5)]"
-            ></motion.div>
-          </div>
-          <p className="text-white text-[10px] font-bold">Lvl. 12 • 1,240 XP</p>
-        </div>
-      )}
-    </div>
-  </aside>
+    </aside>
+  </>
 );
 
 interface ChapterCardProps {
@@ -750,7 +782,7 @@ const MultiplayerView = ({ mufrodat, sentences }: { mufrodat: MufrodatItem[], se
                 ) : (
                   <>
                     <p className="text-emerald-300 text-sm font-bold uppercase tracking-[0.3em] mb-4">APA ARTI KATA INI?</p>
-                    <h3 className="text-8xl font-arabic font-bold text-amber-400 drop-shadow-2xl leading-none" dir="rtl">
+                    <h3 className="text-5xl lg:text-8xl font-arabic font-bold text-amber-400 drop-shadow-2xl leading-none" dir="rtl">
                       {currentQuestion.arabic}
                     </h3>
                   </>
@@ -758,16 +790,19 @@ const MultiplayerView = ({ mufrodat, sentences }: { mufrodat: MufrodatItem[], se
             </div>
 
             {/* Split Screen Play Areas */}
-            <div className="flex-1 grid grid-cols-2 divide-x-4 divide-amber-400/40 overflow-hidden">
+            <div className="flex-1 flex flex-col lg:grid lg:grid-cols-2 lg:divide-x-4 lg:divide-amber-400/40 overflow-hidden relative">
+              {/* Reset Indicator for mobile */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[2px] bg-amber-400/20 lg:hidden z-20"></div>
+
               {/* Player 1 Section */}
-              <div className="p-8 bg-emerald-900/10 flex flex-col justify-center overflow-hidden">
+              <div className="flex-1 p-4 lg:p-8 bg-emerald-900/10 flex flex-col justify-center overflow-hidden">
                 {currentQuestion?.type === 'choice' ? (
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-2 gap-2 lg:gap-3">
                     {options.map((opt, i) => (
                       <button 
                         key={i}
                         onClick={() => handleChoice(opt, 1)}
-                        className="p-4 rounded-xl bg-white/5 border-2 border-white/10 hover:bg-emerald-600 hover:scale-[1.02] font-display font-bold text-lg transition-all active:scale-95"
+                        className="p-3 lg:p-4 rounded-xl bg-white/5 border-2 border-white/10 hover:bg-emerald-600 hover:scale-[1.02] font-display font-bold text-sm lg:text-lg transition-all active:scale-95"
                       >
                         {opt}
                       </button>
@@ -789,20 +824,20 @@ const MultiplayerView = ({ mufrodat, sentences }: { mufrodat: MufrodatItem[], se
                         </button>
                       ))}
                     </div>
-                    <button onClick={() => setP1Selection([])} className="text-[10px] uppercase font-bold text-emerald-500 hover:text-emerald-300">Reset Kalimat</button>
+                    <button onClick={() => setP1Selection([])} className="text-[10px] uppercase font-bold text-emerald-500 hover:text-emerald-300">Reset</button>
                   </div>
                 )}
               </div>
 
               {/* Player 2 Section */}
-              <div className="p-8 bg-emerald-900/10 flex flex-col justify-center overflow-hidden">
+              <div className="flex-1 p-4 lg:p-8 bg-amber-900/10 flex flex-col justify-center overflow-hidden border-t-2 lg:border-t-0 border-amber-400/20">
                 {currentQuestion?.type === 'choice' ? (
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-2 gap-2 lg:gap-3">
                     {options.map((opt, i) => (
                       <button 
                         key={i}
                         onClick={() => handleChoice(opt, 2)}
-                        className="p-4 rounded-xl bg-white/5 border-2 border-white/10 hover:bg-amber-600 hover:scale-[1.02] font-display font-bold text-lg transition-all active:scale-95"
+                        className="p-3 lg:p-4 rounded-xl bg-white/5 border-2 border-white/10 hover:bg-amber-600 hover:scale-[1.02] font-display font-bold text-sm lg:text-lg transition-all active:scale-95"
                       >
                         {opt}
                       </button>
@@ -824,7 +859,7 @@ const MultiplayerView = ({ mufrodat, sentences }: { mufrodat: MufrodatItem[], se
                         </button>
                       ))}
                     </div>
-                    <button onClick={() => setP2Selection([])} className="text-[10px] uppercase font-bold text-emerald-500 hover:text-emerald-300">Reset Kalimat</button>
+                    <button onClick={() => setP2Selection([])} className="text-[10px] uppercase font-bold text-amber-500 hover:text-amber-300">Reset</button>
                   </div>
                 )}
               </div>
@@ -873,6 +908,7 @@ export default function App() {
   const [currentChapter, setCurrentChapter] = useState<Chapter | null>(null);
   const [activeTab, setActiveTab] = useState<'theory' | 'learn' | 'scramble' | 'lab' | 'translate' | 'multiplayer'>('theory');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     if (currentChapter) {
@@ -891,35 +927,42 @@ export default function App() {
         activeChapterId={currentChapter?.id} 
         collapsed={sidebarCollapsed}
         setCollapsed={setSidebarCollapsed}
+        mobileOpen={sidebarOpen}
+        setMobileOpen={setSidebarOpen}
       />
 
-      <div className="flex-1 flex flex-col min-h-screen overflow-x-hidden">
-        <Navbar onHome={() => setCurrentChapter(null)} chapterTitle={currentChapter?.title} />
+      <div className="flex-1 flex flex-col min-h-screen max-w-full overflow-x-hidden">
+        <Navbar 
+          onHome={() => setCurrentChapter(null)} 
+          chapterTitle={currentChapter?.title} 
+          sidebarOpen={sidebarOpen}
+          setSidebarOpen={setSidebarOpen}
+        />
 
-        <main className="p-4 md:p-8 flex-1">
+        <main className="p-4 lg:p-10 flex-1">
           {!currentChapter ? (
-            <div className="py-8">
-              <header className="mb-16 text-center max-w-4xl mx-auto">
+            <div className="max-w-6xl mx-auto py-6 lg:py-8">
+              <header className="mb-12 lg:mb-16 text-center">
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="inline-block bg-white text-emerald-700 px-4 py-1.5 rounded-full text-xs font-bold mb-6 tracking-widest uppercase border border-emerald-100 shadow-sm"
+                  className="inline-block bg-white text-emerald-700 px-4 py-1.5 rounded-full text-[10px] lg:text-xs font-bold mb-6 tracking-widest uppercase border border-emerald-100 shadow-sm"
                 >
                   An-Najah Al-Arabi Platform
                 </motion.div>
                 <motion.h1 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="text-5xl md:text-7xl font-display font-bold mb-6 tracking-tight leading-[1.1] text-emerald-900"
+                  className="text-4xl md:text-6xl lg:text-7xl font-display font-black text-emerald-950 mb-6 leading-[1.1] tracking-tighter"
                 >
                   Kuasai Bahasa Arab <br /> <span className="text-emerald-600">Interaktif & Menyenangkan.</span>
                 </motion.h1>
-                <p className="text-emerald-700/60 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
+                <p className="text-emerald-700/60 text-base md:text-lg lg:text-xl max-w-2xl mx-auto leading-relaxed px-4">
                   Kurikulum Nahwu & Shorof Terintegrasi dengan Lab AI dan Arena Duel Smart Board.
                 </p>
               </header>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 bg-white/40 backdrop-blur-sm p-6 lg:p-10 rounded-[3rem] border border-emerald-100 shadow-xl">
                 {chapters.map((chapter) => (
                   <div key={chapter.id}>
                     <ChapterCard chapter={chapter} onClick={() => setCurrentChapter(chapter)} />
@@ -927,36 +970,37 @@ export default function App() {
                 ))}
               </div>
               
-              <div className="mt-20 bg-white/50 backdrop-blur rounded-3xl p-6 border border-emerald-100 flex items-center justify-between max-w-4xl mx-auto">
+              <div className="mt-12 lg:mt-20 bg-white/50 backdrop-blur rounded-3xl p-6 border border-emerald-100 flex flex-col md:flex-row items-center justify-between max-w-4xl mx-auto gap-4">
                 <div className="flex items-center gap-4">
-                   <div className="p-3 bg-emerald-900 rounded-2xl">
+                   <div className="p-3 bg-emerald-900 rounded-2xl hidden sm:block">
                      <code className="text-xs text-emerald-400 font-mono">JSON &#123; curriculum: "Expanded" &#125;</code>
                    </div>
-                   <p className="text-emerald-800 text-sm font-bold">Materi Nahwu (Mubtada, Khobar, Fi'il, Amil) telah ditambahkan ke sistem.</p>
+                   <p className="text-emerald-800 text-sm font-bold text-center md:text-left">Materi Nahwu (Mubtada, Khobar, Fi'il, Amil) telah ditambahkan ke sistem.</p>
                 </div>
-                <button className="text-emerald-600 text-xs font-bold underline hover:text-emerald-800 transition-colors" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>MULAI BELAJAR</button>
+                <button className="text-emerald-600 text-xs font-bold underline hover:text-emerald-800 transition-colors w-full md:w-auto" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>MULAI BELAJAR</button>
               </div>
             </div>
           ) : (
-            <div className="py-2 animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <div className="grid grid-cols-12 gap-6 mb-12">
-                <section className="col-span-12 lg:col-span-8 bg-white rounded-[2rem] p-8 shadow-sm border border-emerald-100 flex flex-col min-h-[220px]">
-                  <div className="flex justify-between items-start mb-6">
-                    <span className="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">Ringkasan Materi</span>
-                    <span className="text-emerald-400 text-xs font-mono">Bab {currentChapter.id}</span>
+            <div className="max-w-5xl mx-auto py-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 items-stretch">
+                <section className="md:col-span-2 bg-white rounded-[2.5rem] p-6 lg:p-10 border border-emerald-100 shadow-sm flex flex-col">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="bg-emerald-100 p-2.5 rounded-2xl text-emerald-700">
+                       <ScrollText size={20} />
+                    </div>
+                    <h2 className="text-emerald-900 font-black text-xl lg:text-3xl tracking-tight leading-none">{currentChapter.title}</h2>
                   </div>
-                  <h3 className="text-3xl text-emerald-900 font-bold mb-4">{currentChapter.title}</h3>
-                  <p className="text-gray-600 leading-relaxed text-base mb-6">{currentChapter.description}</p>
+                  <p className="text-gray-600 leading-relaxed text-sm lg:text-base mb-6">{currentChapter.description}</p>
                   
-                  <div className="mt-auto bg-emerald-50 rounded-2xl p-5 border-l-4 border-emerald-500 flex justify-between items-center">
+                  <div className="mt-auto bg-emerald-50 rounded-2xl p-4 lg:p-5 border-l-4 border-emerald-500 flex justify-between items-center">
                     <p className="text-emerald-600 text-sm italic font-medium">Fokus Utama:</p>
-                    <p className="text-emerald-900 font-bold text-lg">{currentChapter.materials ? "Teori & Praktek Kalimat" : "Penguasaan Kosakata"}</p>
+                    <p className="text-emerald-900 font-bold text-base lg:text-lg">{currentChapter.materials ? "Teori & Praktek Kalimat" : "Penguasaan Kosakata"}</p>
                   </div>
                 </section>
 
-                <section className="col-span-12 lg:col-span-4 bg-amber-400 rounded-[2rem] p-8 shadow-lg transform lg:-rotate-2 hover:rotate-0 transition-transform duration-500">
+                <section className="bg-amber-400 rounded-[2.5rem] p-8 shadow-lg transform md:-rotate-1 lg:-rotate-2 hover:rotate-0 transition-transform duration-500 hidden md:flex flex-col">
                   <div className="flex justify-between items-center mb-6">
-                    <h3 className="text-amber-900 font-black text-2xl tracking-tighter italic">STATUS BELAJAR</h3>
+                    <h3 className="text-amber-900 font-black text-2xl tracking-tighter italic uppercase">Status</h3>
                     <div className="bg-amber-900/10 px-3 py-1 rounded-full text-amber-900 text-[10px] font-bold uppercase tracking-widest">Active</div>
                   </div>
                   <div className="bg-white rounded-2xl p-4 aspect-[4/3] flex flex-col items-center justify-center text-center shadow-inner relative overflow-hidden">
@@ -968,13 +1012,13 @@ export default function App() {
                       onClick={() => setActiveTab('theory')}
                       className="mt-8 bg-amber-400 text-amber-900 font-bold text-[10px] uppercase tracking-widest px-6 py-2 rounded-full hover:bg-amber-500 transition-colors"
                     >
-                      Baca Materi
+                      Mulai
                     </button>
                   </div>
                 </section>
               </div>
 
-              <div className="flex bg-white/50 backdrop-blur p-1.5 rounded-2xl border border-emerald-100 shadow-sm mb-8 overflow-x-auto no-scrollbar gap-2 max-w-fit">
+              <div className="flex bg-white/50 backdrop-blur p-1.5 rounded-2xl border border-emerald-100 shadow-sm mb-8 overflow-x-auto no-scrollbar gap-2 max-w-full">
                 {[
                   { id: 'theory', label: 'Materi', icon: <ScrollText size={16}/> },
                   { id: 'learn', label: 'Hafalan', icon: <GraduationCap size={16}/> },
@@ -986,7 +1030,7 @@ export default function App() {
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id as any)}
-                    className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all text-sm whitespace-nowrap ${
+                    className={`flex items-center gap-2 px-4 lg:px-6 py-2.5 lg:py-3 rounded-xl font-bold transition-all text-[11px] lg:text-sm whitespace-nowrap ${
                       activeTab === tab.id 
                       ? 'bg-emerald-600 text-white shadow-lg' 
                       : 'text-emerald-700 hover:bg-emerald-100/50'
@@ -1003,7 +1047,7 @@ export default function App() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
-                className="bg-white rounded-[2.5rem] p-8 border border-emerald-100 shadow-sm min-h-[500px]"
+                className="bg-white rounded-[2rem] lg:rounded-[2.5rem] p-4 lg:p-8 border border-emerald-100 shadow-sm min-h-[400px] lg:min-h-[500px]"
               >
                 {activeTab === 'theory' && <MaterialView materials={currentChapter.materials || []} />}
                 {activeTab === 'learn' && <Flashcard mufrodat={currentChapter.mufrodat} />}
@@ -1019,4 +1063,5 @@ export default function App() {
     </div>
   );
 }
+
 
